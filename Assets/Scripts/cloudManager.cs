@@ -9,7 +9,7 @@ public class cloudManager : MonoBehaviour
     private float animationTimer = 0f;
     private bool isTiming = false;
 
-    Animator animator;
+    public Animator animator;
 
     bool hasStartedPlaying = false;
 
@@ -17,7 +17,6 @@ public class cloudManager : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider>();
     }
 
@@ -47,7 +46,7 @@ public class cloudManager : MonoBehaviour
                 }
                 else if (stateInfo.IsName("hugeCloud"))
                 {
-                    Destroy(this.gameObject);
+                    //Destroy(this.gameObject);
                 }
             }
         }
