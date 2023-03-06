@@ -13,11 +13,11 @@ public class cloudManager : MonoBehaviour
 
     bool hasStartedPlaying = false;
 
-    BoxCollider boxCollider;
+    BoxCollider2D boxCollider;
 
     void Start()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     void Update()
@@ -26,7 +26,7 @@ public class cloudManager : MonoBehaviour
         if (isTiming)
         {
             animationTimer += Time.deltaTime;
-            Debug.Log(animationTimer);
+            //Debug.Log(animationTimer);
             if (animationTimer >= animationSpeed)
             {
                 animationTimer = 0f;
@@ -34,15 +34,15 @@ public class cloudManager : MonoBehaviour
                 if (stateInfo.IsName("smallCloud"))
                 {
                     animator.SetBool("growMid", true);
-                    boxCollider.size = new Vector3(boxCollider.size.x * 1.5f, boxCollider.size.y, boxCollider.size.z);
+                    boxCollider.size = new Vector3(boxCollider.size.x * 1.5f, boxCollider.size.y);
                 } else if (stateInfo.IsName("midCloud"))
                 {
                     animator.SetBool("growBig", true);
-                    boxCollider.size = new Vector3(boxCollider.size.x * 1.5f, boxCollider.size.y, boxCollider.size.z);
+                    boxCollider.size = new Vector3(boxCollider.size.x * 1.5f, boxCollider.size.y);
                 } else if (stateInfo.IsName("bigCloud"))
                 {
                     animator.SetBool("growHuge", true);
-                    boxCollider.size = new Vector3(boxCollider.size.x * 1.5f, boxCollider.size.y, boxCollider.size.z);
+                    boxCollider.size = new Vector3(boxCollider.size.x * 1.5f, boxCollider.size.y);
                 }
                 else if (stateInfo.IsName("hugeCloud"))
                 {

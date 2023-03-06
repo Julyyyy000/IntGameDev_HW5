@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private float timeSinceCloud = 0f;
-    private const float secondsBetweenClouds = 5f;
+    public float secondsBetweenClouds = 2f;
     private const int maxClouds = 20;
 
     public GameObject cloudPrefab;
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
                         Random.Range(0, cloudHeight),
                         0f
                     );
-                    Debug.Log(newCloudObj.transform.position);
+                    //Debug.Log(newCloudObj.transform.position);
                     tries++;
                 }
             }
