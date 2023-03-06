@@ -179,7 +179,7 @@ public class playerManager : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Floor") && (myBody.velocity.y < 0))
         {
             score -= 1;
         }
