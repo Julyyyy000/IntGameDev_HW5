@@ -11,7 +11,7 @@ public class playerManager : MonoBehaviour
     public Sprite jump2Sprite;
     public Sprite fallSprite;
     public Sprite defeatSprite;
-    bool respawn = true;
+    public bool respawn = true;
     public float respawnTime = 4f;
     float respawnTimer;
     bool respawning = false;
@@ -170,7 +170,7 @@ public class playerManager : MonoBehaviour
         {
             if (myBody.velocity.y < 0 && !defeat)
             {
-                collision.gameObject.GetComponent<Animator>().SetBool("gone", true);
+                collision.gameObject.GetComponent<cloudManager>().animator.SetBool("gone", true);
                 jumping = true;
                 myRenderer.sprite = jump2Sprite;
 

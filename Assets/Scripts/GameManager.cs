@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public float cloudWidth = 1.2f;
     public float cloudHeight = 2f;
 
+    public GameObject red;
+    public GameObject green;
+
     void Update()
     {
         timeSinceCloud += Time.deltaTime;
@@ -38,6 +41,23 @@ public class GameManager : MonoBehaviour
 
             timeSinceCloud = 0f;
         }
+
+        Vector3 newPos = transform.position;
+        if (!red.GetComponent<playerManager>().respawn && !green.GetComponent<playerManager>().respawn)
+        {
+            newPos.y = (red.transform.position.y + green.transform.position.y) / 2;
+        } else if (red.GetComponent<playerManager>().respawn && !green.GetComponent<playerManager>().respawn)
+        {
+            newPos.y = green.transform.position.y;
+        }
+        else if (green.GetComponent<playerManager>().respawn && !red.GetComponent<playerManager>().respawn)
+        {
+            newPos.y = red.transform.position.y;
+        } else
+        {
+            newPos.y = 0;
+        }
+        transform.position = newPos;
     }
 
     private bool IsCollidingWithCloud(GameObject obj)
