@@ -6,7 +6,7 @@ public class playerManager : MonoBehaviour
 {
     float horizontalMove;
     public float setSpeed;
-    float speed = 0;
+    public float speed = 0;
     public Sprite jump1Sprite;
     public Sprite jump2Sprite;
     public Sprite fallSprite;
@@ -102,7 +102,6 @@ public class playerManager : MonoBehaviour
         } else if (defeat)
         {
             myRenderer.sprite = defeatSprite;
-            score -= 1;
         }
     }
 
@@ -148,17 +147,20 @@ public class playerManager : MonoBehaviour
             myRenderer.sprite = fallSprite;
         }
 
+        /*
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
         Debug.DrawRay(transform.position, Vector2.down, Color.red);
 
-        if (hit.collider != null && hit.transform.name != transform.name)
+        if (hit.collider != null && hit.transform.name == otherPlayer.name)
         {
             score += 1;
             jumping = true;
             myRenderer.sprite = jump2Sprite;
             otherPlayer.GetComponent<playerManager>().defeat = true;
+            otherPlayer.GetComponent<playerManager>().speed = 0;
         }
+        */
 
         myBody.velocity = new Vector3(moveSpeed, myBody.velocity.y, 0);
     }
@@ -176,6 +178,12 @@ public class playerManager : MonoBehaviour
 
             }
         }
+
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            score -= 1;
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -187,8 +195,16 @@ public class playerManager : MonoBehaviour
             newPos.x = initialPos.x;
             transform.position = newPos;
             speed = 0;
-            score -= 1;
             defeat = false;
+        }
+
+        if (collision.gameObject.CompareTag("Player") && (myBody.velocity.y < 0))
+        {
+            score += 1;
+            jumping = true;
+            myRenderer.sprite = jump2Sprite;
+            otherPlayer.GetComponent<playerManager>().defeat = true;
+            otherPlayer.GetComponent<playerManager>().speed = 0;
         }
     }
 }

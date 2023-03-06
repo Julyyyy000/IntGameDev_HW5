@@ -43,14 +43,14 @@ public class GameManager : MonoBehaviour
         }
 
         Vector3 newPos = transform.position;
-        if (!red.GetComponent<playerManager>().respawn && !green.GetComponent<playerManager>().respawn)
+        if (!(red.transform.position.y <= 0) && !(green.transform.position.y <= 0))
         {
             newPos.y = (red.transform.position.y + green.transform.position.y) / 2;
-        } else if (red.GetComponent<playerManager>().respawn && !green.GetComponent<playerManager>().respawn)
+        } else if ((red.transform.position.y <= 0) && !(green.transform.position.y <= 0))
         {
             newPos.y = green.transform.position.y;
         }
-        else if (green.GetComponent<playerManager>().respawn && !red.GetComponent<playerManager>().respawn)
+        else if ((green.transform.position.y <= 0) && !(red.transform.position.y <= 0))
         {
             newPos.y = red.transform.position.y;
         } else
