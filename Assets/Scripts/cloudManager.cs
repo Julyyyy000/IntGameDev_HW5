@@ -58,6 +58,11 @@ public class cloudManager : MonoBehaviour
         } else if (stateInfo.normalizedTime >= 1)
         {
             //when animation ends
+            if (animator.GetBool("gone"))
+            {
+                Destroy(this.gameObject);
+            }
+
             isTiming = true;
             hasStartedPlaying = false;
         }

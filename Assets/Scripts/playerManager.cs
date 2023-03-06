@@ -10,6 +10,7 @@ public class playerManager : MonoBehaviour
     public Sprite jump1Sprite;
     public Sprite jump2Sprite;
     public Sprite fallSprite;
+    public Sprite defeatSprite;
     bool respawn = true;
     public float respawnTime = 4f;
     float respawnTimer;
@@ -29,6 +30,10 @@ public class playerManager : MonoBehaviour
     public float jumpLimit = 1f;
     //bool bounce = false;
 
+    public GameObject otherPlayer;
+    public bool defeat = false;
+    public int score;
+
     SpriteRenderer myRenderer;
 
     public GameObject gameManager;
@@ -40,12 +45,13 @@ public class playerManager : MonoBehaviour
         myRenderer = GetComponent<SpriteRenderer>();
         respawnTimer = respawnTime;
         initialPos = transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!respawn)
+        if (!respawn && !defeat)
         {
             horizontalMove = Input.GetAxis("Horizontal");
             speed = setSpeed;
@@ -54,14 +60,36 @@ public class playerManager : MonoBehaviour
             Vector3 newScale = transform.localScale;
             if (horizontalMove > 0)
             {
-                newScale.x = 1;
+                if (gameObject.name == "player1" && Input.GetKey(KeyCode.RightArrow))
+                {
+                    newScale.x = 1;
+                } else if (gameObject.name == "player2" && Input.GetKey(KeyCode.D))
+                {
+                    newScale.x = 1;
+                } else
+                {
+                    horizontalMove = 0;
+                }
             }
             else if (horizontalMove < 0)
             {
-                newScale.x = -1;
+                if (gameObject.name == "player1" && Input.GetKey(KeyCode.LeftArrow))
+                {
+                    newScale.x = -1;
+                }
+                else if (gameObject.name == "player2" && Input.GetKey(KeyCode.A))
+                {
+                    newScale.x = -1;
+                }
+                else
+                {
+                    horizontalMove = 0;
+                }
+
             }
+            Debug.Log(horizontalMove);
             transform.localScale = newScale;
-        } else
+        } else if (respawn)
         {
             respawnTimer -= Time.deltaTime;
             if (respawnTimer <= 0)
@@ -71,6 +99,10 @@ public class playerManager : MonoBehaviour
                 respawning = true;
 
             }
+        } else if (defeat)
+        {
+            myRenderer.sprite = defeatSprite;
+            score -= 1;
         }
     }
 
@@ -117,15 +149,17 @@ public class playerManager : MonoBehaviour
         }
 
 
-        /*
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
         Debug.DrawRay(transform.position, Vector2.down, Color.red);
 
-        if (hit.collider != null && hit.transform.CompareTag("Cloud"))
+        if (hit.collider != null && hit.transform.name != transform.name)
         {
-
+            score += 1;
+            jumping = true;
+            myRenderer.sprite = jump2Sprite;
+            otherPlayer.GetComponent<playerManager>().defeat = true;
         }
-        */
+
         myBody.velocity = new Vector3(moveSpeed, myBody.velocity.y, 0);
     }
 
@@ -134,9 +168,9 @@ public class playerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Cloud"))
         {
-            if (myBody.velocity.y < 0)
+            if (myBody.velocity.y < 0 && !defeat)
             {
-                Destroy(collision.gameObject);
+                collision.gameObject.GetComponent<Animator>().SetBool("gone", true);
                 jumping = true;
                 myRenderer.sprite = jump2Sprite;
 
@@ -153,6 +187,8 @@ public class playerManager : MonoBehaviour
             newPos.x = initialPos.x;
             transform.position = newPos;
             speed = 0;
+            score -= 1;
+            defeat = false;
         }
     }
 }
